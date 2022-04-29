@@ -1,0 +1,7 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+gunicorn
+isort
+psycopg2-binary
+PyJWT
