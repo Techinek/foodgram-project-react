@@ -1,17 +1,6 @@
-version: "3"
+version: '3.8'
+
 services:
-  backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
-    restart: always
-    volumes:
-      - static_value:/var/html/static/
-      - media_value:/var/html/media/
-    depends_on:
-      - db
-    env_file:
-      - ./.env
 
   db:
     image: postgres:14.0-alpine
@@ -20,31 +9,45 @@ services:
     env_file:
       - ./.env
 
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    expose:
+      - 8000
+    restart: always
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media/
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+
   frontend:
     build:
       context: ../frontend
       dockerfile: Dockerfile
     volumes:
-      - result_build:/app/result_build/
+      - ../frontend/:/app/result_build/
     depends_on:
-      - db
+      - backend
 
   nginx:
-    image: nginx:1.20.2
+    image: nginx:1.21.3-alpine
     ports:
       - "80:80"
     volumes:
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
-      - static_value:/var/html/static/
-      - media_value:/var/html/media/
+    restart: always
     depends_on:
       - frontend
-      - backend
 
 volumes:
+  postgres_data:
   static_value:
   media_value:
-  postgres_data:
-  result_build:
