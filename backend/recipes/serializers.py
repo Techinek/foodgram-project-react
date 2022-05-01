@@ -4,7 +4,7 @@ from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from users.serializers import CustomUserSerializer  # isort:skip
+from users.serializers import CustomUserSerializer
 from .models import (FavoriteRecipe, Ingredient, Recipe, RecipeIngredient,
                      ShoppingList, Tag)
 
@@ -107,22 +107,16 @@ class AddRecipeSerializer(serializers.ModelSerializer):
             )
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
-                raise ValidationError(
-                        'Amount of ingredients should be at least 1!'
-                )
+                raise ValidationError('Ingredients cannot be none!')
         ids = [item['id'] for item in ingredients]
         if len(ids) != len(set(ids)):
-            raise ValidationError(
-                    'Ingredients should be unique!'
-            )
+            raise ValidationError('Ingredients should be unique!')
         return ingredients
 
     @staticmethod
     def validate_cooking_time(value):
         if value <= 0:
-            raise ValidationError(
-                    'Cooking time should be more than 0!'
-            )
+            raise ValidationError('Cooking time should be more than 0!')
         return value
 
     @staticmethod
@@ -218,7 +212,5 @@ class ShoppingListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
-        return ShowFavoriteRecipeShopListSerializer(
-            instance.recipe,
-            context=context
-        ).data
+        return ShowFavoriteRecipeShopListSerializer(instance.recipe,
+                                                    context=context).data
