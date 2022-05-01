@@ -10,43 +10,17 @@ class CustomUser(AbstractUser):
     ROLES = {
         (USER, 'user'),
         (MODERATOR, 'moderator'),
-        (ADMIN, 'admin'),
+        (ADMIN, 'admin')
     }
-    email = models.EmailField(
-            max_length=254,
-            unique=True,
-            blank=False,
-            error_messages={
-                'unique':'Пользователь с таким email уже существует!',
-            },
-    )
-    username = models.CharField(
-            max_length=150,
-            unique=True,
-            error_messages={
-                'unique':'Пользователь с таким никнеймом уже существует!',
-            },
-    )
-    first_name = models.CharField(
-            max_length=150,
-            blank=True,
-    )
-    last_name = models.CharField(
-            max_length=150,
-            blank=True,
-    )
-    role = models.CharField(
-            max_length=20,
-            choices=ROLES,
-            default=USER,
-    )
-    date_joined = models.DateTimeField(
-            auto_now_add=True,
-    )
-    password = models.CharField(
-            max_length=150,
-            help_text='Введите пароль',
-    )
+    email = models.EmailField(max_length=254, unique=True, blank=False,
+                              error_messages={'unique': 'Choose another!'})
+    username = models.CharField(max_length=150, unique=True,
+                                error_messages={'unique': 'Choose another!'})
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    role = models.CharField(max_length=20, choices=ROLES, default=USER)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    password = models.CharField(max_length=150)
 
     def __str__(self):
         return self.get_full_name()
@@ -68,13 +42,10 @@ class Follow(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                    fields=['user', 'author'], name='unique_follow'
-            ),
-            models.CheckConstraint(
-                    check=~Q(user=F('author')),
-                    name='self_following',
-            ),
+            models.UniqueConstraint(fields=['user', 'author'],
+                                    name='unique_follow'),
+            models.CheckConstraint(check=~Q(user=F('author')),
+                                   name='self_following')
         ]
 
     def __str__(self):

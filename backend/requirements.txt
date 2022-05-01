@@ -1,10 +1,12 @@
 asgiref==3.5.0
+Brotli==1.0.9
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.12
 coreapi==2.3.3
 coreschema==0.0.4
 cryptography==37.0.1
+cssselect2==0.6.0
 defusedxml==0.7.1
 Django==4.0.4
 django-cors-headers==3.11.0
@@ -14,7 +16,9 @@ djangorestframework==3.13.1
 djangorestframework-simplejwt==4.8.0
 djoser==2.1.0
 drf-base64==2.0
+fonttools==4.33.3
 gunicorn==20.1.0
+html5lib==1.1
 idna==3.3
 isort==5.10.1
 itypes==1.2.0
@@ -24,7 +28,9 @@ oauthlib==3.2.0
 Pillow==9.1.0
 psycopg2-binary==2.9.3
 pycparser==2.21
+pydyf==0.1.2
 PyJWT==2.3.0
+pyphen==0.12.0
 python-dotenv==0.20.0
 python3-openid==3.2.0
 pytz==2022.1
@@ -34,5 +40,9 @@ six==1.16.0
 social-auth-app-django==4.0.0
 social-auth-core==4.2.0
 sqlparse==0.4.2
+tinycss2==1.1.1
 uritemplate==4.1.1
 urllib3==1.26.9
+weasyprint==54.3
+webencodings==0.5.1
+zopfli==0.2.1
