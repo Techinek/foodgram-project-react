@@ -8,18 +8,9 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    name = models.CharField(
-        max_length=40,
-        unique=True,
-        null=False,
-    )
-    color = HexColorField(
-        unique=True,
-        null=True,
-    )
-    slug = models.SlugField(
-        unique=True,
-    )
+    name = models.CharField(max_length=40, unique=True, null=False)
+    color = HexColorField(unique=True, null=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ('-id',)
@@ -29,114 +20,68 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(
-        max_length=200,
-        blank=False,
-    )
-    measurement_unit = models.CharField(
-        max_length=50,
-        blank=False,
-    )
+    name = models.CharField(max_length=200, blank=False)
+    measurement_unit = models.CharField(max_length=50, blank=False)
 
     class Meta:
-        constraints = (
-            models.UniqueConstraint(
-                fields=('name', 'measurement_unit'),
-                name='pair_unique'),
-        )
+        constraints = (models.UniqueConstraint(fields=('name',
+                                                       'measurement_unit'),
+                                               name='pair_unique'))
         ordering = ('-id',)
-        verbose_name = 'Ингредиент'
-        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return f'{self.name}'
 
 
 class Recipe(models.Model):
-    name = models.CharField(
-        max_length=200,
-        unique=True,
-    )
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='recipes',
-    )
+    name = models.CharField(max_length=200, unique=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='recipes')
     text = models.TextField()
-    tags = models.ManyToManyField(
-        Tag,
-        related_name='recipes',
-    )
-    ingredients = models.ManyToManyField(
-        Ingredient,
-        through='RecipeIngredient',
-    )
+    tags = models.ManyToManyField(Tag, related_name='recipes')
+    ingredients = models.ManyToManyField(Ingredient,
+                                         through='RecipeIngredient')
     image = models.ImageField(
         upload_to='recipes/',
     )
     cooking_time = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(1,
-                                      message='Time should be at least one!',
-                                      ),),)
+        validators=[MinValueValidator(1, message='Time cannot be none!')])
 
     class Meta:
         ordering = ('-id',)
-        verbose_name = 'Рецепт'
-        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return self.name
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='recipe_ingredient')
-    ingredient = models.ForeignKey(
-        Ingredient,
-        on_delete=models.CASCADE,
-        related_name='ingredient_recipe')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+                               related_name='recipe_ingredient')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE,
+                                   related_name='ingredient_recipe')
     amount = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(
-            1,
-            message='Should be at least 1!',
-        ),),
-    )
+        validators=[MinValueValidator(1, message='Should be at least 1!')])
 
     class Meta:
         constraints = (
-            models.UniqueConstraint(
-                fields=('recipe', 'ingredient',),
-                name='recipe_ingredient_exists'),
-            models.CheckConstraint(
-                check=models.Q(amount__gte=1),
-                name='amount_gte_1'),
-        )
+            models.UniqueConstraint(fields=('recipe', 'ingredient'),
+                                    name='recipe_ingredient_exists'),
+            models.CheckConstraint(check=models.Q(amount__gte=1),
+                                   name='amount_gte_1'))
 
     def __str__(self):
         return f'{self.recipe}: {self.ingredient} – {self.amount}'
 
 
 class FavoriteRecipe(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='in_favorite',
-    )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='favorite',
-    )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+                               related_name='in_favorite')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='favorite')
 
     class Meta:
-        constraints = (
-            models.UniqueConstraint(
-                fields=('recipe', 'user'),
-                name='unique_favorite',
-            ),
-        )
+        constraints = (models.UniqueConstraint(fields=('recipe', 'user'),
+                                               name='unique_favorite'),)
         ordering = ('-id',)
 
     def __str__(self):
@@ -144,24 +89,15 @@ class FavoriteRecipe(models.Model):
 
 
 class ShoppingList(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='shopping_recipe'
-    )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='shopping_user',
-    )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+                               related_name='shopping_recipe')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='shopping_user')
 
     class Meta:
         constraints = (
-            models.UniqueConstraint(
-                fields=('recipe', 'user'),
-                name='shopping_recipe_user_exists',
-            ),
-        )
+            models.UniqueConstraint(fields=('recipe', 'user'),
+                                    name='shopping_recipe_user_exists'),)
         ordering = ('-id',)
 
     def __str__(self):
