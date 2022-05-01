@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping list</title>
+</head>
+<body>
+    <h2>Shopping list</h2>
+    {% for name, amount, measurement_unit  in ingredients %}
+        <li>{{ name }} - {{ amount }} {{ measurement_unit }}</li>
+    {% endfor %}
+    <h4>Date {% now 'd.m.Y G:i'%}</h4>
+</body>
+</html>
