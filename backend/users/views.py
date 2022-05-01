@@ -14,7 +14,7 @@ from .serializers import FollowSerializer
 
 
 @api_view(['POST', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated, ])
+@permission_classes([permissions.IsAuthenticated])
 def follow_author(request, pk):
     user = get_object_or_404(CustomUser, username=request.user.username)
     author = get_object_or_404(CustomUser, pk=pk)
@@ -54,7 +54,7 @@ class SubscriptionListView(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        new_queryset = CustomUser.objects.filter(following__user=user)
+        new_queryset = CustomUser.objects.filter(author__user=user)
         return new_queryset
 
 
