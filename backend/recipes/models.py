@@ -24,9 +24,9 @@ class Ingredient(models.Model):
     measurement_unit = models.CharField(max_length=50, blank=False)
 
     class Meta:
-        constraints = (models.UniqueConstraint(fields=('name',
+        constraints = [models.UniqueConstraint(fields=('name',
                                                        'measurement_unit'),
-                                               name='pair_unique'))
+                                               name='pair_unique')]
         ordering = ('-id',)
 
     def __str__(self):
@@ -63,11 +63,11 @@ class RecipeIngredient(models.Model):
         validators=[MinValueValidator(1, message='Should be at least 1!')])
 
     class Meta:
-        constraints = (
+        constraints = [
             models.UniqueConstraint(fields=('recipe', 'ingredient'),
                                     name='recipe_ingredient_exists'),
             models.CheckConstraint(check=models.Q(amount__gte=1),
-                                   name='amount_gte_1'))
+                                   name='amount_gte_1')]
 
     def __str__(self):
         return f'{self.recipe}: {self.ingredient} – {self.amount}'
@@ -80,8 +80,8 @@ class FavoriteRecipe(models.Model):
                              related_name='favorite')
 
     class Meta:
-        constraints = (models.UniqueConstraint(fields=('recipe', 'user'),
-                                               name='unique_favorite'),)
+        constraints = [models.UniqueConstraint(fields=('recipe', 'user'),
+                                               name='unique_favorite')]
         ordering = ('-id',)
 
     def __str__(self):
@@ -95,9 +95,8 @@ class ShoppingList(models.Model):
                              related_name='shopping_user')
 
     class Meta:
-        constraints = (
-            models.UniqueConstraint(fields=('recipe', 'user'),
-                                    name='shopping_recipe_user_exists'),)
+        constraints = [models.UniqueConstraint(fields=('recipe', 'user'),
+                                               name='shopping_recipe_exists')]
         ordering = ('-id',)
 
     def __str__(self):
