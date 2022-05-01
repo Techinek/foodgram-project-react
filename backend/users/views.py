@@ -29,11 +29,8 @@ def follow_author(request, pk):
             content = {'errors': 'Author is already in your follows'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         follows = CustomUser.objects.all().filter(username=author)
-        serializer = FollowSerializer(
-            follows,
-            context={'request': request},
-            many=True,
-        )
+        serializer = FollowSerializer(follows, context={'request': request},
+                                      many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     if request.method == 'DELETE':
