@@ -1,10 +1,44 @@
-# praktikum_new_diplom
-1. Checked loading ingredients - OK.
-2. Checked user creation and logging on the front
-3. Checked recipe creation, retrieving and editing.
-4. Checked following authors operation
-5. Checked favourite recipes.
-6. Checked recipes for adding to shopping cart and generating shopping list
-with sum of ingredients.
-7. Checked password change and logging out.
-8. Checked models in the admin area
+# Foodgram
+
+User-friendly platform where anyone can post recipes, add them to favourites
+or even form a shopping list with the needed ingredients to cook the dishes.
+
+### Stack
+- Python
+- Django
+- Django REST Framework
+- PostgreSQL
+- JWT
+- Docker
+- NGINX
+
+### How to start the app
+- Go to infra folder and create .env file that should have values for the
+following constants. Here's an example:
+```
+SECRET_KEY=<SECRET_KEY>
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+```
+- After creating the file start docker-compose:
+```
+sudo docker-compose up -d --build
+```
+- Then collect static files:
+```
+docker-compose exec backend python manage.py collectstatic --no-input
+```
+- After make migrations to sync django models with db tables:
+```
+docker-compose exec backend python manage.py migrate --noinput
+```
+- Fill the db with ingredients:
+```
+docker-compose exec backend python manage.py load_ingredients
+```
+
+Author: [techinek](https://github.com/Techinek)
