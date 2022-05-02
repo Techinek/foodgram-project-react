@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, status, viewsets
@@ -40,10 +41,10 @@ class RecipesViewSet(viewsets.ModelViewSet):
     def favorite_shopping_post_delete(self, related_manager):
         recipe = self.get_object()
         if self.request.method == 'DELETE':
-            related_manager.get(recipe_id=recipe.id).delete()
+            get_object_or_404(related_manager, recipe_id=recipe.id).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         if related_manager.filter(recipe=recipe).exists():
-            raise ValidationError('Рецепт уже в избранном')
+            raise ValidationError('Recipe is already in favourites')
         related_manager.create(recipe=recipe)
         serializer = RecipeSerializer(instance=recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -51,9 +52,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
     @action(detail=True, permission_classes=[permissions.IsAuthenticated],
             methods=['POST', 'DELETE'])
     def favorite(self, request, pk=None):
-        return self.favorite_shopping_post_delete(
-            request.user.favorite
-        )
+        return self.favorite_shopping_post_delete(request.user.favorite)
 
     @action(detail=True, permission_classes=[permissions.IsAuthenticated],
             methods=['POST', 'DELETE'])

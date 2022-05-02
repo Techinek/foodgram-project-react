@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
         (MODERATOR, 'moderator'),
         (ADMIN, 'admin')
     }
-    email = models.EmailField(max_length=254, unique=True, blank=False,
+    email = models.EmailField(max_length=254, unique=True,
                               error_messages={'unique': 'Choose another!'})
     username = models.CharField(max_length=150, unique=True,
                                 error_messages={'unique': 'Choose another!'})
@@ -41,6 +41,8 @@ class Follow(models.Model):
                                related_name='author')
 
     class Meta:
+        verbose_name = 'Follow'
+        verbose_name_plural = 'Follows'
         constraints = [
             models.UniqueConstraint(fields=['user', 'author'],
                                     name='unique_follow'),

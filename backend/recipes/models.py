@@ -8,11 +8,13 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=40, unique=True, null=False)
+    name = models.CharField(max_length=40, unique=True)
     color = HexColorField(unique=True, null=True)
     slug = models.SlugField(unique=True)
 
     class Meta:
+        verbose_name = 'Tag'
+        verbose_name_plural = 'Tags'
         ordering = ('-id',)
 
     def __str__(self):
@@ -20,10 +22,12 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200, blank=False)
-    measurement_unit = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=200)
+    measurement_unit = models.CharField(max_length=50)
 
     class Meta:
+        verbose_name = 'Ingredient'
+        verbose_name_plural = 'Ingredients'
         constraints = [models.UniqueConstraint(fields=('name',
                                                        'measurement_unit'),
                                                name='pair_unique')]
@@ -48,6 +52,8 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1, message='Time cannot be none!')])
 
     class Meta:
+        verbose_name = 'Recipe'
+        verbose_name_plural = 'Recipes'
         ordering = ('-id',)
 
     def __str__(self):
@@ -63,6 +69,8 @@ class RecipeIngredient(models.Model):
         validators=[MinValueValidator(1, message='Should be at least 1!')])
 
     class Meta:
+        verbose_name = 'Recipe ingredient'
+        verbose_name_plural = 'Recipe ingredients'
         constraints = [
             models.UniqueConstraint(fields=('recipe', 'ingredient'),
                                     name='recipe_ingredient_exists'),
@@ -80,6 +88,8 @@ class FavoriteRecipe(models.Model):
                              related_name='favorite')
 
     class Meta:
+        verbose_name = 'Favourite recipe'
+        verbose_name_plural = 'Favourite recipes'
         constraints = [models.UniqueConstraint(fields=('recipe', 'user'),
                                                name='unique_favorite')]
         ordering = ('-id',)
@@ -95,6 +105,8 @@ class ShoppingList(models.Model):
                              related_name='shopping_user')
 
     class Meta:
+        verbose_name = 'Shopping list'
+        verbose_name_plural = 'Shopping lists'
         constraints = [models.UniqueConstraint(fields=('recipe', 'user'),
                                                name='shopping_recipe_exists')]
         ordering = ('-id',)

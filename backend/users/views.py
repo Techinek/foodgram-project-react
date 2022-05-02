@@ -36,8 +36,8 @@ def follow_author(request, pk):
     if request.method == 'DELETE':
         try:
             subscription = Follow.objects.get(user=user, author=author)
-        except ObjectDoesNotExist:
-            content = {'errors': 'ВAuthor is already in your follows'}
+        except Follow.DoesNotExist:
+            content = {'errors': 'Author is already in your follows'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         subscription.delete()
         return HttpResponse('Author is unfollowed',
