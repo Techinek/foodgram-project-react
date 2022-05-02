@@ -179,9 +179,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
         recipe_id = data['recipe'].id
         if FavoriteRecipe.objects.filter(user=user,
                                          recipe__id=recipe_id).exists():
-            raise ValidationError(
-                'Recipe was already added!'
-            )
+            raise ValidationError('Recipe was already added!')
         return data
 
     def to_representation(self, instance):
@@ -204,9 +202,7 @@ class ShoppingListSerializer(serializers.ModelSerializer):
         recipe_id = data['recipe'].id
         if ShoppingList.objects.filter(user=user,
                                        recipe__id=recipe_id).exists():
-            raise ValidationError(
-                'Recipe is already in cart!'
-            )
+            raise ValidationError('Recipe is already in cart!')
         return data
 
     def to_representation(self, instance):
