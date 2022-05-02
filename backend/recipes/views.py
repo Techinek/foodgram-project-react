@@ -48,17 +48,15 @@ class RecipesViewSet(viewsets.ModelViewSet):
         serializer = RecipeSerializer(instance=recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True,
-            permission_classes=[permissions.IsAuthenticated],
-            methods=['POST', 'DELETE'], )
+    @action(detail=True, permission_classes=[permissions.IsAuthenticated],
+            methods=['POST', 'DELETE'])
     def favorite(self, request, pk=None):
         return self.favorite_shopping_post_delete(
             request.user.favorite
         )
 
-    @action(detail=True,
-            permission_classes=[permissions.IsAuthenticated],
-            methods=['POST', 'DELETE'], )
+    @action(detail=True, permission_classes=[permissions.IsAuthenticated],
+            methods=['POST', 'DELETE'])
     def shopping_cart(self, request, pk=None):
         return self.favorite_shopping_post_delete(request.user.shopping_user)
 

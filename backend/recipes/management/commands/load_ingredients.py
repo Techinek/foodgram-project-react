@@ -13,6 +13,6 @@ class Command(BaseCommand):
                   encoding='UTF-8') as ingredients:
             for row in reader(ingredients):
                 if len(row) == 2:
-                    Ingredient.objects.get_or_create(
-                        name=row[0], measurement_unit=row[1],
-                    )
+                    Ingredient.objects.get_or_create(name=row[0],
+                                                     measurement_unit=row[1])
+                    
