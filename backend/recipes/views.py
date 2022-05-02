@@ -37,7 +37,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         return self.serializer_classes.get(self.action,
                                            self.default_serializer_class)
 
-    def _favorite_shopping_post_delete(self, related_manager):
+    def favorite_shopping_post_delete(self, related_manager):
         recipe = self.get_object()
         if self.request.method == 'DELETE':
             related_manager.get(recipe_id=recipe.id).delete()
@@ -52,7 +52,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
             permission_classes=[permissions.IsAuthenticated],
             methods=['POST', 'DELETE'], )
     def favorite(self, request, pk=None):
-        return self._favorite_shopping_post_delete(
+        return self.favorite_shopping_post_delete(
             request.user.favorite
         )
 
@@ -60,7 +60,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
             permission_classes=[permissions.IsAuthenticated],
             methods=['POST', 'DELETE'], )
     def shopping_cart(self, request, pk=None):
-        return self._favorite_shopping_post_delete(request.user.shopping_user)
+        return self.favorite_shopping_post_delete(request.user.shopping_user)
 
     @action(detail=False)
     def download_shopping_cart(self, request):
