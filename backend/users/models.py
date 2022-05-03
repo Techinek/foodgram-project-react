@@ -12,15 +12,25 @@ class CustomUser(AbstractUser):
         (MODERATOR, 'moderator'),
         (ADMIN, 'admin')
     }
-    email = models.EmailField(max_length=254, unique=True,
+    email = models.EmailField(verbose_name='email address', max_length=254,
+                              unique=True,
                               error_messages={'unique': 'Choose another!'})
-    username = models.CharField(max_length=150, unique=True,
+    username = models.CharField(verbose_name='username', max_length=150,
+                                unique=True,
                                 error_messages={'unique': 'Choose another!'})
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
-    role = models.CharField(max_length=20, choices=ROLES, default=USER)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    password = models.CharField(max_length=150)
+    first_name = models.CharField(verbose_name='first name', max_length=150,
+                                  blank=True)
+    last_name = models.CharField(verbose_name='last name', max_length=150,
+                                 blank=True)
+    role = models.CharField(verbose_name='user role', max_length=20,
+                            choices=ROLES, default=USER)
+    date_joined = models.DateTimeField(verbose_name='registration date',
+                                       auto_now_add=True)
+    password = models.CharField(verbose_name='password', max_length=150)
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
     def __str__(self):
         return self.get_full_name()
@@ -35,9 +45,11 @@ class CustomUser(AbstractUser):
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
+    user = models.ForeignKey(CustomUser, verbose_name='user',
+                             on_delete=models.CASCADE,
                              related_name='follower')
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
+    author = models.ForeignKey(CustomUser, verbose_name='author',
+                               on_delete=models.CASCADE,
                                related_name='author')
 
     class Meta:
