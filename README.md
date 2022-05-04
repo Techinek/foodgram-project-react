@@ -42,4 +42,4 @@ docker-compose exec backend python manage.py load_ingredients
 ```
 
 Author: [techinek](https://github.com/Techinek)
--11
+-12
