@@ -40,6 +40,9 @@ docker-compose exec backend python manage.py migrate --noinput
 ```
 docker-compose exec backend python manage.py load_ingredients
 ```
+### Credentials:
+- Host: http://84.201.143.18/admin (andreykus: 1q2s3e4f)
+- Admin-role: andreykusk@yandex.ru: 1q2s3e4f
+- User-role: ivan@mail.ru: 1q2s3e4f
 
 Author: [techinek](https://github.com/Techinek)
--13
