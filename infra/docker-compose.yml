@@ -10,9 +10,7 @@ services:
       - ./.env
 
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: kuskovan/foodgram-backend:latest
     expose:
       - 8000
     restart: always
@@ -25,9 +23,7 @@ services:
       - ./.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: kuskovan/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:

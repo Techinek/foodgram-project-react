@@ -42,3 +42,4 @@ docker-compose exec backend python manage.py load_ingredients
 ```
 
 Author: [techinek](https://github.com/Techinek)
+-second attempt
