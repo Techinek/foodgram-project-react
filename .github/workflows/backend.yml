@@ -1,4 +1,4 @@
-name: foodgram_project
+name: foodgram_backend
 
 on:
   push:
