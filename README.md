@@ -42,11 +42,6 @@ docker-compose exec backend python manage.py load_ingredients
 ```
 
 ### API endpoints
-http://84.201.143.18/api/docs/
-
-### Credentials:
-- Host: http://84.201.143.18/admin (andreykus: 1q2s3e4f)
-- Admin-role: andreykusk@yandex.ru: 1q2s3e4f
-- User-role: ivan@mail.ru: 1q2s3e4f
+http://localhost/api/docs/
 
 Author: [techinek](https://github.com/Techinek)
